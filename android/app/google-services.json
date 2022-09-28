@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1071183499571",
+    "project_id": "tourmate-26634",
+    "storage_bucket": "tourmate-26634.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1071183499571:android:8deb20f0b4b5ce8e826e46",
+        "android_client_info": {
+          "package_name": "com.example.flutter_tour_mate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1071183499571-kvimr4it9pgo9clv7v4g51srtuq0kgqg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDONSwdD3L-7fKAfG9k2Bugv2utBxQ4YVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1071183499571-kvimr4it9pgo9clv7v4g51srtuq0kgqg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
