@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tour_mate/models/toure_model.dart';
+import 'package:flutter_tour_mate/pages/new_tour_page.dart';
+import 'package:flutter_tour_mate/widgets/tour_item.dart';
 
 import '../colors/colors.dart';
 import '../db/db_firestore_helper.dart';
@@ -29,9 +32,12 @@ class _HomePageState extends State<HomePage> {
           ),
           StreamBuilder(
             stream: DBFirestoreHelper.getAllTours(),
-            builder: (context, AsyncSnapshot<QuerySnapshot>snapshot){
+            builder: (context, AsyncSnapshot<dynamic>snapshot){
               if(snapshot.hasData){
-                return ListView.builder(itemBuilder: null);
+                return ListView.builder(itemBuilder: (context, index)=>
+                    TourItem(TourModel.fromMap(snapshot.data.docs[index].data())),
+                  itemCount: snapshot.data.docs.length,
+                );
               }
               if(snapshot.hasError){
                 return Center(child: Text('Failed to fetch data'),);
@@ -40,6 +46,10 @@ class _HomePageState extends State<HomePage> {
             }
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: ()=>Navigator.pushNamed(context, NewTourPage.routeName),
       ),
     );
   }

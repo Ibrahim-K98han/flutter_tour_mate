@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tour_mate/pages/home_page.dart';
 import 'package:flutter_tour_mate/pages/launcher_page.dart';
 import 'package:flutter_tour_mate/pages/login_page.dart';
+import 'package:flutter_tour_mate/pages/new_tour_page.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         LauncherPage.routeName : (context) => LauncherPage(),
         LoginPage.routeName : (context) => LoginPage(),
         HomePage.routeName : (context) => HomePage(),
+        NewTourPage.routeName : (context) => NewTourPage(),
       },
     );
   }
