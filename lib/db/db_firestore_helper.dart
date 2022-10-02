@@ -14,4 +14,13 @@ class DBFirestoreHelper {
   static Stream<QuerySnapshot> getAllTours(){
     return _db.collection(COLLECTION_TOUR).snapshots();
   }
+
+  static Future deleteTour(String, id)async{
+    await _db.collection(COLLECTION_TOUR).doc(id).delete();
+  }
+
+  static Future<TourModel> getTourById(String, id)async{
+    final snapshot = await _db.collection(COLLECTION_TOUR).doc(id).get();
+    return TourModel.fromMap(snapshot.data()!);
+  }
 }

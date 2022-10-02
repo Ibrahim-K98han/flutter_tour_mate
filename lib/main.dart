@@ -4,6 +4,7 @@ import 'package:flutter_tour_mate/pages/home_page.dart';
 import 'package:flutter_tour_mate/pages/launcher_page.dart';
 import 'package:flutter_tour_mate/pages/login_page.dart';
 import 'package:flutter_tour_mate/pages/new_tour_page.dart';
+import 'package:flutter_tour_mate/pages/tour_details_page.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         LoginPage.routeName : (context) => LoginPage(),
         HomePage.routeName : (context) => HomePage(),
         NewTourPage.routeName : (context) => NewTourPage(),
+        TourDetailsPage.routeName : (context) => TourDetailsPage(),
       },
     );
   }

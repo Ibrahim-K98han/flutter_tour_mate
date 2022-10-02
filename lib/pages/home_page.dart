@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tour_mate/models/toure_model.dart';
@@ -47,10 +48,21 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: ()=>Navigator.pushNamed(context, NewTourPage.routeName),
-      ),
+      floatingActionButton: OpenContainer(
+        transitionType: ContainerTransitionType.fade,
+        transitionDuration: Duration(milliseconds: 700),
+        openBuilder: (context,_)=>NewTourPage(),
+        closedBuilder: (context,_)=>SizedBox(
+          width: 60,
+          height: 60,
+          child: Icon(Icons.add,color: Colors.white,),
+        ),
+        closedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
+        closedElevation: 7.0,
+        closedColor: backgroundColor,
+      )
     );
   }
 }
