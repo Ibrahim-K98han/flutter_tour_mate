@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tour_mate/models/toure_model.dart';
 import 'package:flutter_tour_mate/pages/new_tour_page.dart';
@@ -9,7 +8,9 @@ import '../colors/colors.dart';
 import '../db/db_firestore_helper.dart';
 
 class HomePage extends StatefulWidget {
-  static final routeName = '/home';
+  static const routeName = '/home';
+
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: true,
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        title: Text('Tour List'),
+        title: const Text('Tour List'),
       ),
       body: Stack(
         children: [
@@ -41,18 +42,18 @@ class _HomePageState extends State<HomePage> {
                 );
               }
               if(snapshot.hasError){
-                return Center(child: Text('Failed to fetch data'),);
+                return const Center(child: Text('Failed to fetch data'),);
               }
-              return Center(child: CircularProgressIndicator(),);
+              return const Center(child: CircularProgressIndicator(),);
             }
           ),
         ],
       ),
       floatingActionButton: OpenContainer(
         transitionType: ContainerTransitionType.fade,
-        transitionDuration: Duration(milliseconds: 700),
+        transitionDuration: const Duration(milliseconds: 700),
         openBuilder: (context,_)=>NewTourPage(),
-        closedBuilder: (context,_)=>SizedBox(
+        closedBuilder: (context,_)=>const SizedBox(
           width: 60,
           height: 60,
           child: Icon(Icons.add,color: Colors.white,),

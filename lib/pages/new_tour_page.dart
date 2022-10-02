@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import '../style/text_styles.dart';
 
 class NewTourPage extends StatefulWidget {
-  static final routeName = '/new_tour';
+  static const routeName = '/new_tour';
 
   @override
   State<NewTourPage> createState() => _NewTourPageState();
@@ -44,7 +44,7 @@ class _NewTourPageState extends State<NewTourPage> {
       backgroundColor: backgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('New Tour'),
+        title: const Text('New Tour'),
       ),
       body: Stack(
         children: [
@@ -57,14 +57,14 @@ class _NewTourPageState extends State<NewTourPage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Form(
               key: _formKey,
               child: ListView(
                 children: [
                   TextFormField(
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
                         labelText: 'Tour Name',
                         labelStyle: textWhite14,
                         filled: true,
@@ -84,11 +84,11 @@ class _NewTourPageState extends State<NewTourPage> {
                       tourModel.tourName = value;
                     },
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   TextFormField(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: 'Enter Budget',
                         labelStyle: textWhite14,
                         filled: true,
@@ -108,10 +108,10 @@ class _NewTourPageState extends State<NewTourPage> {
                       tourModel.budget = double.parse(value!);
                     },
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   TextFormField(
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
                         labelText: 'Enter Destination',
                         labelStyle: textWhite14,
                         filled: true,
@@ -128,32 +128,32 @@ class _NewTourPageState extends State<NewTourPage> {
                       tourModel.destination = value;
                     },
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(selectedDate == null ?'Select a Starting Date':
                       DateFormat('EEE MMM dd, yyyy').format(selectedDate!),style: textWhite16),
                       ElevatedButton(
-                        child: Text('Open Calender', style: textWhite14,),
                         onPressed: _openCalender,
                         style: ElevatedButton.styleFrom(
                           primary: Colors.grey, // Background color
                         ),
+                        child: const Text('Open Calender', style: textWhite14,),
                       )
                     ],
                   ),
-                  SizedBox(height: 30,),
+                  const SizedBox(height: 30,),
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         primary: Colors.grey,
                         elevation: 5,
-                        textStyle: TextStyle(color: Colors.white),
+                        textStyle: const TextStyle(color: Colors.white),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
-                      child: Text('Create New Tour'),
                       onPressed: _save,
+                      child: const Text('Create New Tour'),
                     ),
                   )
                 ],

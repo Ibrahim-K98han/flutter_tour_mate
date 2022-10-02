@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           elevation: 0,
           color: Colors.transparent
         ),
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       routes: {
         LauncherPage.routeName : (context) => LauncherPage(),
         LoginPage.routeName : (context) => LoginPage(),
-        HomePage.routeName : (context) => HomePage(),
+        HomePage.routeName : (context) => const HomePage(),
         NewTourPage.routeName : (context) => NewTourPage(),
         TourDetailsPage.routeName : (context) => TourDetailsPage(),
       },

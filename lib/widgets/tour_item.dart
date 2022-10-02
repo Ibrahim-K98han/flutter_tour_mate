@@ -22,10 +22,10 @@ class _TourItemState extends State<TourItem> {
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.only(right: 10),
         margin: const EdgeInsets.symmetric(vertical: 7,horizontal: 10),
         color: Colors.red,
-        child: Icon(Icons.delete,color: Colors.white,),
+        child: const Icon(Icons.delete,color: Colors.white,),
       ),
       onDismissed: (direction){
         DBFirestoreHelper.deleteTour(String, widget.tourModel.id);
@@ -35,15 +35,15 @@ class _TourItemState extends State<TourItem> {
           context:context,
           builder: (context) => AlertDialog(
             title: Text('Delete ${widget.tourModel.tourName}?'),
-            content: Text('Are you sure to delete this item? You cannot undo this operation'),
+            content: const Text('Are you sure to delete this item? You cannot undo this operation'),
             actions: [
               TextButton(
                 onPressed: ()=>Navigator.pop(context, false),
-                child: Text('CANCEL'),
+                child: const Text('CANCEL'),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text('DELETE'),
+                child: const Text('DELETE'),
               )
             ],
           )
@@ -64,7 +64,7 @@ class _TourItemState extends State<TourItem> {
         ),
         openBuilder: (context, _)=>TourDetailsPage(id: widget.tourModel.id!),
         transitionType: ContainerTransitionType.fade,
-        transitionDuration: Duration(milliseconds: 700),
+        transitionDuration: const Duration(milliseconds: 700),
       )
     );
   }
