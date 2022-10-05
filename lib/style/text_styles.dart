@@ -14,6 +14,10 @@ const textWhite14 = TextStyle(
     fontSize: 14,
     color: Colors.white,
 );
+const textWhite10 = TextStyle(
+    fontSize: 10,
+    color: Colors.white,
+);
 const textWhite16 = TextStyle(
     fontSize: 16,
     color: Colors.white,

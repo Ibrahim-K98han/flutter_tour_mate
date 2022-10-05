@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tour_mate/models/toure_model.dart';
 import 'package:flutter_tour_mate/pages/new_tour_page.dart';

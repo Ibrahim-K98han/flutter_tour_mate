@@ -7,14 +7,15 @@ import 'package:flutter_tour_mate/style/text_styles.dart';
 import 'package:flutter_tour_mate/utils/tour_utils.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_tour_mate/models/expence_model.dart';
 
 import '../models/toure_model.dart';
 
 class TourDetailsPage extends StatefulWidget {
   static final routeName = '/tour_details';
-  final String? id;
+  final String? tourId;
 
-  TourDetailsPage({this.id});
+  TourDetailsPage({this.tourId});
 
   @override
   State<TourDetailsPage> createState() => _TourDetailsPageState();
@@ -52,7 +53,7 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
           Positioned.fill(
             top: 70,
             child: FutureBuilder(
-              future: DBFirestoreHelper.getTourById(String, widget.id),
+              future: DBFirestoreHelper.getTourById(String, widget.tourId),
               builder: (context, AsyncSnapshot<TourModel> snapshot) {
                 if (snapshot.hasData) {
                   return CustomScrollView(
@@ -63,13 +64,14 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                         sliver: SliverGrid.count(
                           crossAxisCount: 4,
                           childAspectRatio: 1,
-                          children: List.generate(16, (index) =>
-                              Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.all(2.0),
-                                color: Colors.white,
-                                child: Text('image'),
-                              )),
+                          children: List.generate(
+                              16,
+                              (index) => Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.all(2.0),
+                                    color: Colors.white,
+                                    child: Text('image'),
+                                  )),
                         ),
                       )
                     ],
@@ -124,8 +126,7 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                       style: textWhite16,
                     ),
                     Text(
-                      'Starting on ${getFormatedDate(
-                          tourModel.startDate!, 'MMM dd')}',
+                      'Starting on ${getFormatedDate(tourModel.startDate!, 'MMM dd')}',
                       style: textWhite14,
                     ),
                     Text(
@@ -139,20 +140,19 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                 right: 10,
                 child: Container(
                   alignment: Alignment.center,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width / 2,
+                  width: MediaQuery.of(context).size.width / 2,
                   height: 80,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(12),
-                        bottomRight: Radius.circular(12)
-                    ),
+                        bottomRight: Radius.circular(12)),
                   ),
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: Text('Complete Tour', style: textWhite16,),
+                    child: Text(
+                      'Complete Tour',
+                      style: textWhite16,
+                    ),
                   ),
                 ),
               )
@@ -177,32 +177,55 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
               percent: 0.8,
               progressColor: Colors.red,
               backgroundColor: Colors.white,
-              center: Text('80%', style: textWhite30,),
+              center: Text(
+                '80%',
+                style: textWhite30,
+              ),
             ),
           ),
-          SizedBox(width: 20,),
+          SizedBox(
+            width: 20,
+          ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Expance', style: textWhite22,),
+                Text(
+                  'Expance',
+                  style: textWhite22,
+                ),
                 Divider(
                   color: Colors.white,
                   thickness: 2,
                 ),
-                Text('Budget: ${tourModel.budget} Tk', style: textWhite16,),
-                Text('Expance: 1000 Tk', style: textWhite16,),
-                Text('Remaining: 9000 Tk', style: textWhite16,),
+                Text(
+                  'Budget: ${tourModel.budget} Tk',
+                  style: textWhite16,
+                ),
+                Text(
+                  'Expance: 1000 Tk',
+                  style: textWhite16,
+                ),
+                Text(
+                  'Remaining: 9000 Tk',
+                  style: textWhite16,
+                ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       onPressed: _showAddExpenceDialog,
-                      icon: Icon(Icons.add, color: Colors.white,),
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.list, color: Colors.white,),
+                      onPressed: _viewExpenseDialog,
+                      icon: Icon(
+                        Icons.list,
+                        color: Colors.white,
+                      ),
                     )
                   ],
                 ),
@@ -224,13 +247,22 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('My Moments', style: textWhite22,),
-              Text('11 images found', style: textWhite16,),
+              Text(
+                'My Moments',
+                style: textWhite22,
+              ),
+              Text(
+                '11 images found',
+                style: textWhite16,
+              ),
             ],
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.camera_alt, color: Colors.white,),
+            icon: Icon(
+              Icons.camera_alt,
+              color: Colors.white,
+            ),
           )
         ],
       ),
@@ -238,93 +270,172 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
   }
 
   void _showAddExpenceDialog() {
-    ExpenceModel expenceModel = ExpenceModel(tourId: widget.id);
+    ExpenceModel expenceModel = ExpenceModel(tourId: widget.tourId);
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: backgroundColor,
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          title: Text('Add New Expense',style: TextStyle(color: Colors.white),),
-          content: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelStyle: textWhite14,
-                    filled: true,
-                    fillColor: rowItemColor,
-                    labelText: 'Expense Name',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value){
-                    if(value!.isEmpty){
-                      return 'Name should not be empty';
-                    }
-                    return null;
-                  },
-                  onSaved: (value){
-                    expenceModel.expenseName = value;
-                  },
+              backgroundColor: backgroundColor,
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: Text(
+                'Add New Expense',
+                style: TextStyle(color: Colors.white),
+              ),
+              content: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        labelStyle: textWhite14,
+                        filled: true,
+                        fillColor: rowItemColor,
+                        labelText: 'Expense Name',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Name should not be empty';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        expenceModel.expenseName = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelStyle: textWhite14,
+                        filled: true,
+                        fillColor: rowItemColor,
+                        labelText: 'Expense Amount',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Amount should not be empty';
+                        }
+                        if (double.parse(value) <= 0.0) {
+                          return 'Amount should be greater than 0';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        expenceModel.expenseAmount = double.parse(value!);
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
                 ),
-                SizedBox(height: 10,),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelStyle: textWhite14,
-                    filled: true,
-                    fillColor: rowItemColor,
-                    labelText: 'Expense Amount',
-                    border: OutlineInputBorder(),
+              ),
+              actions: [
+                ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: rowItemColor),
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text(
+                    'CANCEL',
+                    style: TextStyle(color: Colors.white),
                   ),
-                  validator: (value){
-                    if(value!.isEmpty){
-                      return 'Amount should not be empty';
-                    }
-                    if(double.parse(value)<=0.0){
-                      return 'Amount should be greater than 0';
-                    }
-                    return null;
-                  },
-                  onSaved: (value){
-                    expenceModel.expenseAmount = double.parse(value!);
-                  },
                 ),
-                SizedBox(height: 10,),
+                ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: rowItemColor),
+                    onPressed: () {
+                      _saveExpense(expenceModel)
+                          .then((value) => Navigator.pop(context));
+                    },
+                    child: Text(
+                      'ADD',
+                      style: TextStyle(color: Colors.white),
+                    ))
               ],
-            ),
-          ),
+            ));
+  }
+
+  Future _saveExpense(ExpenceModel expenceModel) async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      expenceModel.expenseDate = DateTime.now().microsecondsSinceEpoch;
+      await tourProvider!.saveExpense(expenceModel);
+    }
+  }
+
+  void _viewExpenseDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              backgroundColor: backgroundColor,
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              title: Text(
+                'View Exprense',
+                style: TextStyle(color: Colors.white),
+              ),
+              content: Container(
+                width: MediaQuery.of(context).size.width * 0.70,
+                height: MediaQuery.of(context).size.height * 0.50,
+                child: StreamBuilder(
+                  stream: tourProvider!.getExpenses(widget.tourId!),
+                  builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        itemBuilder: (context, index) => ListTile(
+                          title: Text(
+                            ExpenceModel.fromMap(
+                                    snapshot.data.docs[index].data())
+                                .expenseName
+                                .toString(),
+                            style: textWhite16,
+                          ),
+                          subtitle: Text(getFormatedDate(
+                              ExpenceModel.fromMap(
+                                      snapshot.data.docs[index].data())
+                                  .expenseDate!,
+                              'dd/MM/yyyy hh:mm:ss',), style: textWhite10,),
+                          trailing: Chip(
+                            backgroundColor: rowItemColor,
+                            label: Text('${ExpenceModel.fromMap(
+                                snapshot.data.docs[index].data())
+                                .expenseAmount}',style: textWhite14,),
+                          ),
+                        ),
+                        itemCount: snapshot.data!.docs.length,
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text('Failed to fetch data'),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+              ),
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: rowItemColor
               ),
-                onPressed: ()=>Navigator.pop(context,false),
-                child: Text('CANCEL',style: TextStyle(color: Colors.white),),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: rowItemColor
-              ),
-                onPressed: (){
-                  _saveExpense(expenceModel).then((value) => Navigator.pop(context));
-                },
-                child: Text('ADD',style: TextStyle(color: Colors.white),)
+              onPressed: ()=>Navigator.pop(context),
+              child: Text('CANCEL',style: textWhite16,),
             )
           ],
-        )
-    );
-  }
-
-  Future _saveExpense(ExpenceModel expenceModel) async{
-    if(_formKey.currentState!.validate()){
-      _formKey.currentState!.save();
-      expenceModel.expenseDate = DateTime.now().microsecondsSinceEpoch;
-      await tourProvider!.saveExpense(expenceModel);
-    }
+            ));
   }
 }

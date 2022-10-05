@@ -62,7 +62,7 @@ class _TourItemState extends State<TourItem> {
             subtitle: Text('${widget.tourModel.destination}', style: texSubtHeadLineStyle,),
           ),
         ),
-        openBuilder: (context, _)=>TourDetailsPage(id: widget.tourModel.id!),
+        openBuilder: (context, _)=>TourDetailsPage(tourId: widget.tourModel.id!),
         transitionType: ContainerTransitionType.fade,
         transitionDuration: const Duration(milliseconds: 700),
       )
