@@ -148,6 +148,9 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                         bottomRight: Radius.circular(12)),
                   ),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: backgroundColor
+                    ),
                     onPressed: () {},
                     child: Text(
                       'Complete Tour',
