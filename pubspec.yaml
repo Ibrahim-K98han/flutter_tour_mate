@@ -41,6 +41,8 @@ dependencies:
   cloud_firestore:
   intl:
   animations:
+  percent_indicator:
+  provider:
 
 dev_dependencies:
   flutter_test:

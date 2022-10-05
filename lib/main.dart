@@ -5,6 +5,8 @@ import 'package:flutter_tour_mate/pages/launcher_page.dart';
 import 'package:flutter_tour_mate/pages/login_page.dart';
 import 'package:flutter_tour_mate/pages/new_tour_page.dart';
 import 'package:flutter_tour_mate/pages/tour_details_page.dart';
+import 'package:flutter_tour_mate/providers/tour_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,27 +15,31 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-          color: Colors.transparent
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context)=>TourProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            elevation: 0,
+            color: Colors.transparent
+          ),
+          primarySwatch: Colors.blue,
         ),
-        primarySwatch: Colors.blue,
+        home: LauncherPage(),
+        routes: {
+          LauncherPage.routeName : (context) => LauncherPage(),
+          LoginPage.routeName : (context) => LoginPage(),
+          HomePage.routeName : (context) => const HomePage(),
+          NewTourPage.routeName : (context) => NewTourPage(),
+          TourDetailsPage.routeName : (context) => TourDetailsPage(),
+        },
       ),
-      home: LauncherPage(),
-      routes: {
-        LauncherPage.routeName : (context) => LauncherPage(),
-        LoginPage.routeName : (context) => LoginPage(),
-        HomePage.routeName : (context) => const HomePage(),
-        NewTourPage.routeName : (context) => NewTourPage(),
-        TourDetailsPage.routeName : (context) => TourDetailsPage(),
-      },
     );
   }
 }
