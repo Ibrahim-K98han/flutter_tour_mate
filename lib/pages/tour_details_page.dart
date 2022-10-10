@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tour_mate/colors/colors.dart';
 import 'package:flutter_tour_mate/db/db_firestore_helper.dart';
@@ -5,10 +6,9 @@ import 'package:flutter_tour_mate/models/expence_model.dart';
 import 'package:flutter_tour_mate/providers/tour_provider.dart';
 import 'package:flutter_tour_mate/style/text_styles.dart';
 import 'package:flutter_tour_mate/utils/tour_utils.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_tour_mate/models/expence_model.dart';
-
 import '../models/toure_model.dart';
 
 class TourDetailsPage extends StatefulWidget {
@@ -176,12 +176,12 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
             child: CircularPercentIndicator(
               animation: true,
               lineWidth: 10,
-              radius: 50,
-              percent: 0.8,
+              radius: 100,
+              percent: 0.6,
               progressColor: Colors.red,
               backgroundColor: Colors.white,
               center: Text(
-                '80%',
+                '60%',
                 style: textWhite30,
               ),
             ),
@@ -261,7 +261,7 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
             ],
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: _captureImage,
             icon: Icon(
               Icons.camera_alt,
               color: Colors.white,
@@ -282,7 +282,7 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              title: Text(
+              title: const Text(
                 'Add New Expense',
                 style: TextStyle(color: Colors.white),
               ),
@@ -292,8 +292,8 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
                         labelStyle: textWhite14,
                         filled: true,
                         fillColor: rowItemColor,
@@ -310,13 +310,13 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                         expenceModel.expenseName = value;
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     TextFormField(
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelStyle: textWhite14,
                         filled: true,
                         fillColor: rowItemColor,
@@ -336,7 +336,7 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                         expenceModel.expenseAmount = double.parse(value!);
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                   ],
@@ -347,7 +347,7 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                   style:
                       ElevatedButton.styleFrom(backgroundColor: rowItemColor),
                   onPressed: () => Navigator.pop(context, false),
-                  child: Text(
+                  child: const Text(
                     'CANCEL',
                     style: TextStyle(color: Colors.white),
                   ),
@@ -359,7 +359,7 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                       _saveExpense(expenceModel)
                           .then((value) => Navigator.pop(context));
                     },
-                    child: Text(
+                    child: const Text(
                       'ADD',
                       style: TextStyle(color: Colors.white),
                     ))
@@ -440,5 +440,12 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
             )
           ],
             ));
+  }
+
+
+  void _captureImage() async{
+    PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+    print(pickedFile.path);
+    StorageReference rootRef = FirebaseStorage.instance.ref();
   }
 }
