@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tour_mate/colors/colors.dart';
 import 'package:flutter_tour_mate/db/db_firestore_helper.dart';
 import 'package:flutter_tour_mate/models/expence_model.dart';
+import 'package:flutter_tour_mate/models/moment_model.dart';
 import 'package:flutter_tour_mate/providers/tour_provider.dart';
 import 'package:flutter_tour_mate/style/text_styles.dart';
 import 'package:flutter_tour_mate/utils/tour_utils.dart';
@@ -445,7 +448,21 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
 
   void _captureImage() async{
     PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-    print(pickedFile.path);
+    //print(pickedFile.path);
+    final imageName = 'Tourmate_${DateTime.now().microsecondsSinceEpoch}';
     StorageReference rootRef = FirebaseStorage.instance.ref();
+    StorageReference photoRef = rootRef.child('TourMate/$imageName');
+    final uploadTask = photoRef.putFile(File(pickedFile.path));
+    final snapShot = await uploadTask.onComplete;
+    snapShot.ref.getDownloadURL().then((url) {
+      print(url.toString());
+      final moment = MomentModel(
+        tourId:widget.tourId,
+        momentName: imageName,
+        localImagePath: pickedFile.path,
+        imageDownloadUrl: url.toString()
+      );
+      tourProvider!.saveMoment(moment).then((value) => print('moment saved'));
+    });
   }
 }

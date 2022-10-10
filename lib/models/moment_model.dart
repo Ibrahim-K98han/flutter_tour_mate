@@ -1,17 +1,20 @@
 class MomentModel {
+  String? momentId;
   String? tourId;
   String? momentName;
   String? localImagePath;
   String? imageDownloadUrl;
 
   MomentModel(
-      {this.tourId,
+      {this.momentId,
+      this.tourId,
       this.momentName,
       this.localImagePath,
       this.imageDownloadUrl});
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
+      'momentId': momentId,
       'tourId': tourId,
       'name': momentName,
       'localPath': localImagePath,
@@ -21,6 +24,7 @@ class MomentModel {
   }
 
   MomentModel.fromMap(Map<String, dynamic> map) {
+    momentId = map['momentId'];
     tourId = map['tourId'];
     momentName = map['name'];
     localImagePath = map['localPath'];
@@ -29,6 +33,6 @@ class MomentModel {
 
   @override
   String toString() {
-    return 'MomentModel{tourId: $tourId, momentName: $momentName, localImagePath: $localImagePath, imageDownloadUrl: $imageDownloadUrl}';
+    return 'MomentModel{momentId: $momentId, tourId: $tourId, momentName: $momentName, localImagePath: $localImagePath, imageDownloadUrl: $imageDownloadUrl}';
   }
 }
