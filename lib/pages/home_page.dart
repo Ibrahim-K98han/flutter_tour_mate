@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tour_mate/models/toure_model.dart';
 import 'package:flutter_tour_mate/pages/new_tour_page.dart';
+import 'package:flutter_tour_mate/widgets/main_drawer.dart';
 import 'package:flutter_tour_mate/widgets/tour_item.dart';
 
 import '../colors/colors.dart';
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainDrawer(),
       extendBodyBehindAppBar: true,
       backgroundColor: backgroundColor,
       appBar: AppBar(

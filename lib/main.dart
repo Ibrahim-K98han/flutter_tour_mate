@@ -6,6 +6,7 @@ import 'package:flutter_tour_mate/pages/launcher_page.dart';
 import 'package:flutter_tour_mate/pages/login_page.dart';
 import 'package:flutter_tour_mate/pages/new_tour_page.dart';
 import 'package:flutter_tour_mate/pages/tour_details_page.dart';
+import 'package:flutter_tour_mate/pages/weather_page.dart';
 import 'package:flutter_tour_mate/providers/tour_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
           HomePage.routeName : (context) => const HomePage(),
           NewTourPage.routeName : (context) => NewTourPage(),
           TourDetailsPage.routeName : (context) => TourDetailsPage(),
+          WeatherPage.routeName : (context) => WeatherPage(),
         },
       ),
     );
