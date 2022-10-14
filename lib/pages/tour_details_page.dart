@@ -9,6 +9,7 @@ import 'package:flutter_tour_mate/models/moment_model.dart';
 import 'package:flutter_tour_mate/providers/tour_provider.dart';
 import 'package:flutter_tour_mate/style/text_styles.dart';
 import 'package:flutter_tour_mate/utils/tour_utils.dart';
+import 'package:flutter_tour_mate/widgets/moment_grid_item.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,8 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
   @override
   void didChangeDependencies() {
     tourProvider = Provider.of<TourProvider>(context);
+    tourProvider!.fetchExpense('${widget.tourId}');
+    tourProvider!.fetchMoments('${widget.tourId}');
     super.didChangeDependencies();
   }
 
@@ -67,14 +70,9 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                         sliver: SliverGrid.count(
                           crossAxisCount: 4,
                           childAspectRatio: 1,
-                          children: List.generate(
-                              16,
-                              (index) => Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.all(2.0),
-                                    color: Colors.white,
-                                    child: Text('image'),
-                                  )),
+                          children: tourProvider!.momentList
+                              .map((momentModel) => MomentGridItem(momentModel))
+                              .toList(),
                         ),
                       )
                     ],
@@ -152,8 +150,7 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: backgroundColor
-                    ),
+                        backgroundColor: backgroundColor),
                     onPressed: () {},
                     child: Text(
                       'Complete Tour',
@@ -407,16 +404,21 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                                 .toString(),
                             style: textWhite16,
                           ),
-                          subtitle: Text(getFormatedDate(
+                          subtitle: Text(
+                            getFormatedDate(
                               ExpenceModel.fromMap(
                                       snapshot.data.docs[index].data())
                                   .expenseDate!,
-                              'dd/MM/yyyy hh:mm:ss',), style: textWhite10,),
+                              'dd/MM/yyyy hh:mm:ss',
+                            ),
+                            style: textWhite10,
+                          ),
                           trailing: Chip(
                             backgroundColor: rowItemColor,
-                            label: Text('${ExpenceModel.fromMap(
-                                snapshot.data.docs[index].data())
-                                .expenseAmount}',style: textWhite14,),
+                            label: Text(
+                              '${ExpenceModel.fromMap(snapshot.data.docs[index].data()).expenseAmount}',
+                              style: textWhite14,
+                            ),
                           ),
                         ),
                         itemCount: snapshot.data!.docs.length,
@@ -433,21 +435,23 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
                   },
                 ),
               ),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: rowItemColor
-              ),
-              onPressed: ()=>Navigator.pop(context),
-              child: Text('CANCEL',style: textWhite16,),
-            )
-          ],
+              actions: [
+                ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: rowItemColor),
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'CANCEL',
+                    style: textWhite16,
+                  ),
+                )
+              ],
             ));
   }
 
-
-  void _captureImage() async{
-    PickedFile pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
+  void _captureImage() async {
+    PickedFile pickedFile =
+        await ImagePicker().getImage(source: ImageSource.camera);
     //print(pickedFile.path);
     final imageName = 'Tourmate_${DateTime.now().microsecondsSinceEpoch}';
     StorageReference rootRef = FirebaseStorage.instance.ref();
@@ -457,11 +461,10 @@ class _TourDetailsPageState extends State<TourDetailsPage> {
     snapShot.ref.getDownloadURL().then((url) {
       print(url.toString());
       final moment = MomentModel(
-        tourId:widget.tourId,
-        momentName: imageName,
-        localImagePath: pickedFile.path,
-        imageDownloadUrl: url.toString()
-      );
+          tourId: widget.tourId,
+          momentName: imageName,
+          localImagePath: pickedFile.path,
+          imageDownloadUrl: url.toString());
       tourProvider!.saveMoment(moment).then((value) => print('moment saved'));
     });
   }

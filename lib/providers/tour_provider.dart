@@ -7,10 +7,12 @@ import 'package:flutter_tour_mate/models/toure_model.dart';
 
 class TourProvider with ChangeNotifier{
   List<ExpenceModel> _expenses = [];
+  List<MomentModel> _moments = [];
   TourModel tourModel = TourModel();
   double totalExpense = 0.0;
 
   List<ExpenceModel> get expenseList => _expenses;
+  List<MomentModel> get momentList => _moments;
 
   Future<void> saveExpense(ExpenceModel expenceModel)async{
     await DBFirestoreHelper.addExpense(expenceModel);
@@ -24,14 +26,21 @@ class TourProvider with ChangeNotifier{
     notifyListeners();
     return tourModel;
   }
-  //
-  // void fetchExpense(String tourId){
-  //   DBFirestoreHelper.getAllExpensesListFromDB(tourId).then((value){
-  //     _expenses = value;
-  //     _calculateTotalExpense();
-  //     notifyListeners();
-  //   });
-  // }
+
+  void fetchExpense(String tourId){
+    DBFirestoreHelper.getAllExpensesListFromDB(tourId).then((value){
+      _expenses = value;
+      _calculateTotalExpense();
+      notifyListeners();
+    });
+  }
+
+  void fetchMoments(String tourId){
+    DBFirestoreHelper.getMomentsListFromDB(tourId).then((moments) {
+      _moments = moments;
+      notifyListeners();
+    });
+  }
 
   Stream<QuerySnapshot> getExpenses(String tourId){
     return DBFirestoreHelper.getAllExpenses(tourId);

@@ -35,6 +35,25 @@ class DBFirestoreHelper {
     return _db.collection(COLLECTION_EXPENCE).where('tourId',isEqualTo:tourId).snapshots();
   }
 
+
+  static Future<List<MomentModel>>getMomentsListFromDB(String tourId)async{
+    List<MomentModel> moments = [];
+    final querySnapshot = await _db.collection(COLLECTION_MOMENT).where('tourId',isEqualTo:tourId).get();
+    if(querySnapshot != null){
+      moments = querySnapshot.docs.map((document) => MomentModel.fromMap(document.data())).toList();
+    }
+    return moments;
+  }
+
+  static Future<List<ExpenceModel>>getAllExpensesListFromDB(String tourId)async{
+    List<ExpenceModel> expense = [];
+    final querySnapshot = await _db.collection(COLLECTION_EXPENCE).where('tourId',isEqualTo:tourId).get();
+    if(querySnapshot != null){
+      expense = querySnapshot.docs.map((document) => ExpenceModel.fromMap(document.data())).toList();
+  }
+    return expense;
+}
+
   static Future deleteTour(String, id)async{
     await _db.collection(COLLECTION_TOUR).doc(id).delete();
   }
