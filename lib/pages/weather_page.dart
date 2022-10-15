@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tour_mate/colors/colors.dart';
+import 'package:flutter_tour_mate/providers/weather_provider.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
+import 'package:geolocator/geolocator.dart' as Geo;
 
 class WeatherPage extends StatefulWidget {
   static final routeName = '/weather';
@@ -9,6 +13,20 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
+  @override
+  void didChangeDependencies() {
+    _getDeviceLocation();
+    // Provider.of<WeatherProvider>(context).getCurrentWeatherInfo();
+    super.didChangeDependencies();
+  }
+
+  _getDeviceLocation() async {
+    final position = await Geo.getLastKnownPosition();
+    //print('${position.latitude},${position.longitude}');
+    Provider.of<WeatherProvider>(context, listen: false)
+        .getCurrentWeatherInfo(position);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +46,6 @@ class _WeatherPageState extends State<WeatherPage> {
               height: double.infinity,
               fit: BoxFit.cover,
             ),
-
           )
         ],
       ),

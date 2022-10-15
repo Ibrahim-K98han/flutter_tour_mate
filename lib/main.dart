@@ -8,6 +8,7 @@ import 'package:flutter_tour_mate/pages/new_tour_page.dart';
 import 'package:flutter_tour_mate/pages/tour_details_page.dart';
 import 'package:flutter_tour_mate/pages/weather_page.dart';
 import 'package:flutter_tour_mate/providers/tour_provider.dart';
+import 'package:flutter_tour_mate/providers/weather_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async{
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context)=>TourProvider()),
+        ChangeNotifierProvider(create: (context)=>WeatherProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
