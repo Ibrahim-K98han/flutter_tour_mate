@@ -15,10 +15,10 @@ class WeatherProvider with ChangeNotifier {
         'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&units=metric&appid=db171b97d4e7a84e56129f84d0ff79d8';
     try {
       final response = await Http.get(url);
-      //print(response.body);
       final map = json.decode(response.body);
       _currentWeatherResponse = CurrentWeatherResponse.fromJson(map);
-      print('temp: ${_currentWeatherResponse.main.temp}');
+      notifyListeners();
+
     } catch (error) {
       throw error;
     }

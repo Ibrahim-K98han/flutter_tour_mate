@@ -13,18 +13,22 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
+  bool isLoading = true;
   @override
   void didChangeDependencies() {
     _getDeviceLocation();
-    // Provider.of<WeatherProvider>(context).getCurrentWeatherInfo();
     super.didChangeDependencies();
   }
 
   _getDeviceLocation() async {
     final position = await Geo.getLastKnownPosition();
-    //print('${position.latitude},${position.longitude}');
     Provider.of<WeatherProvider>(context, listen: false)
-        .getCurrentWeatherInfo(position);
+        .getCurrentWeatherInfo(position).
+    then((_){
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -46,9 +50,36 @@ class _WeatherPageState extends State<WeatherPage> {
               height: double.infinity,
               fit: BoxFit.cover,
             ),
+          ),
+          Center(
+            child: LayoutBuilder(
+              builder: (context,constraint)=>Consumer<WeatherProvider>(
+                builder: (context,provider, _)=>
+                isLoading ? CircularProgressIndicator():
+                constraint.maxWidth > 600 ?
+                Row():
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 100,),
+                    Expanded(
+                      child: _buildCurrenstSction(provider))
+                  ],
+                ),
+              ),
+            ),
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildCurrenstSction(WeatherProvider provider) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text('${provider.currentData.name},${provider.currentData.sys.country}'),
+      ],
     );
   }
 }
